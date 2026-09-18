@@ -1,50 +1,66 @@
-Herança aplicada a um backend: a tela de login
-Cada equipe cria o módulo de login (extremamente simplificado ) da API, seguindo exatamente o módulo produtos, que já está pronto no repositório. É a parte prática: o aplicativo manda nome e senha, e a API responde o que aquele usuário pode fazer. Quem decide as permissões é a herança que você estudou na aula 5.
-Na Parte B cada equipe informar onde foi aplicado encapsulamento e herançaao próprio KiOferta e apresenta para a turma em dez minutos.
+# kipreco-python API
 
-As duas partes são feitas pela mesma equipe, de três a quatro pessoas ja definidos.
+Projeto acadêmico desenvolvido durante as aulas de Programação Orientada a Objetos (POO). O objetivo principal é aplicar na prática os fundamentos da orientação a objetos, como herança, polimorfismo e encapsulamento, através da construção de uma API de ofertas.
 
-O módulo de login
-O que você recebe pronto
-Arquivo	O que é
-app/data/produtos_mock.py	Dados mockados dos produtos
-app/models/produto.py	A model Produto e a função carregar_produtos()
-app/controllers/produto_controller.py	O ProdutoController
-app/routes/produto_routes.py	As rotas GET /api/produtos, GET /api/produtos/categoria/{categoria} e GET /api/produtos/{id}
-app/data/usuarios_mock.py	Os usuários mockados que o seu login vai usar
-main.py	Já liga o módulo produtos, com o import e o include_router
-O módulo produtos é o modelo. Leia os quatro arquivos antes de começar: o caminho é sempre o mesmo.
+## 🚀 O que a API faz até o momento
+* **Módulo de Produtos:** Listagem, busca e filtragem de ofertas/produtos disponíveis (dados mockados).
+* **Módulo de Autenticação (Login):** Validação de credenciais de usuários e retorno de permissões de acesso baseadas em perfis hierárquicos (Visitante, Contribuidor e Moderador) utilizando herança e polimorfismo.
 
-main.py  ->  routes  ->  controller  ->  model  ->  data (mock)
+## 🛠️ Tecnologias Utilizadas
+* **Linguagem:** Python 3
+* **Framework:** FastAPI
+* **Servidor:** Uvicorn
 
-Os dados mockados
-# app/data/usuarios_mock.py
-USUARIOS = [
-    {'id': 1, 'nome': 'bia', 'senha': 'bia123', 'perfil': 'visitante'},
-    {'id': 2, 'nome': 'ana', 'senha': 'ana123', 'perfil': 'contribuidor'},
-    {'id': 3, 'nome': 'caio', 'senha': 'caio123', 'perfil': 'moderador'},
-]
+## 📂 Estrutura do Repositório
+A arquitetura do projeto segue o padrão MVC (Model-View-Controller) adaptado para APIs:
 
-São três usuários com três perfis diferentes: cada um precisa virar um objeto de uma classe diferente. É assim que a herança da equipe é verificada.
+```text
+kipreco-python/
+├── app/
+│   ├── controllers/   # Lógica de negócio e intermediação
+│   ├── data/          # Dados mockados (ex: usuarios_mock.py)
+│   ├── models/        # Classes base, entidades (herança/encapsulamento)
+│   └── routes/        # Endpoints da API (produtos, auth)
+├── venv/              # Ambiente virtual isolado
+├── .gitignore         # Arquivos ignorados pelo Git
+├── LICENSE            # Licença de uso do projeto
+├── main.py            # Arquivo principal para inicialização da API
+├── README.md          # Documentação do projeto
+└── requirements.txt   # Dependências do projeto
+```
+## ⚙️ Como executar e testar
 
-Não altere este arquivo. A correção usa exatamente estes dados.
+1. **Clone o repositório:**
+   ```bash
+   git clone https://github.com/MarcosVinicius909/kioferta-python
+   cd kipreco-python
+   ```
 
-Dica: do texto do perfil para a classe
-O mock guarda o perfil como texto, 'moderador'. A model precisa transformar esse texto na classe Moderador. Duas formas são aceitas:
-# com if
-if u['perfil'] == 'moderador':
-    usuario = Moderador(u['id'], u['nome'], u['senha'])
+2. **Crie e ative o ambiente virtual:**
+   * No Windows:
+     ```bash
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+   * No Linux/Mac:
+     ```bash
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
 
-# com um dicionário: em Python a própria classe é um objeto
-PERFIS = {'visitante': Visitante, 'contribuidor': Contribuidor, 'moderador': Moderador}
-usuario = PERFIS[u['perfil']](u['id'], u['nome'], u['senha'])
+3. **Instale as dependências:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Esse if é permitido aqui, na hora de criar o objeto. Depois de criado, ninguém mais pergunta o perfil.
+4. **Inicie o servidor local:**
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-Como testar
-uvicorn main:app --reload
+5. **Acesse a documentação interativa:**
+   Abra o navegador e acesse o Swagger UI em:
+   [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
-Abra http://127.0.0.1:8000/docs e teste, nesta ordem:
-
-Como entregar
-ao clonar o repo, subam para o próprio github, mesmo feito em equipe cada membro sobe em sue github e o link do github no teams
+## 📄 Licença
+Este projeto está sob a licença definida no arquivo `LICENSE` presente na raiz do repositório.
