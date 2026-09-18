@@ -1,27 +1,17 @@
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
+from app.controllers.auth_controller import AuthController
 
-from app.controllers.produto_controller import ProdutoController
+router = APIRouter(prefix='/api/auth', tags=['auth'])
+controller = AuthController()
 
-router = APIRouter(prefix='/api/produtos', tags=['produtos'])
-controller = ProdutoController()
+class LoginRequest(BaseModel):
+    nome: str
+    senha: str
 
-
-@router.get('')
-def listar():
-    return controller.listar()
-
-
-@router.get('/categoria/{categoria}')
-def listar_por_categoria(categoria: str):
-    produtos = controller.listar_por_categoria(categoria)
-    if not produtos:
-        raise HTTPException(404, 'nenhum produto nessa categoria')
-    return produtos
-
-
-@router.get('/{id}')
-def buscar(id: int):
-    produto = controller.buscar(id)
-    if produto is None:
-        raise HTTPException(404, 'produto não encontrado')
-    return produto
+@router.post('/login')
+def login(dados: LoginRequest):
+    usuario_logado = controller.login(dados.nome, dados.senha)
+    if not usuario_logado:
+        raise HTTPException(status_code=401, detail='nome ou senha inválidos')
+    return usuario_logado
